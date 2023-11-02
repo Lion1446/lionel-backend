@@ -1,3 +1,4 @@
+import json
 from flask import Blueprint, make_response, request
 from constants import *
 from models import Unit, db
@@ -8,7 +9,8 @@ unit_blueprint = Blueprint('unit_blueprint', __name__)
 def unit():
     try:
         if request.method == "POST":
-            request_data = request.get_json()
+            request_data = request.data
+            request_data = json.loads(request_data.decode('utf-8')) 
             if request_data["auth_token"] in [AUTH_TOKEN, ADMIN_AUTH_TOKEN]:
                 instance = Unit.query.filter(Unit.name == request_data["name"], Unit.branch_id == request_data["branch_id"]).first()
                 if instance:
@@ -34,7 +36,8 @@ def unit():
                     units.append(instance.to_map())
                 resp = make_response({"status": 200, "remarks": "Success", "units": units})
         elif request.method == "PATCH":
-            request_data = request.get_json()
+            request_data = request.data
+            request_data = json.loads(request_data.decode('utf-8')) 
             id = request.args.get('id')
             if id is None:
                 resp = make_response({"status": 400, "remarks": "Missing id in the request body"})

@@ -1,3 +1,4 @@
+import json
 from flask import Blueprint, make_response, request
 from constants import *
 from models import Category, db
@@ -8,7 +9,8 @@ category_blueprint = Blueprint('category_blueprint', __name__)
 def category():
     try:
         if request.method == "POST":
-            request_data = request.get_json()
+            request_data = request.data
+            request_data = json.loads(request_data.decode('utf-8')) 
             if request_data["auth_token"] in [AUTH_TOKEN, ADMIN_AUTH_TOKEN]:
                 instance = Category.query.filter(Category.name == request_data["name"], Category.branch_id == request_data["branch_id"]).first()
                 if instance:
@@ -34,7 +36,8 @@ def category():
                     categories.append(instance.to_map())
                 resp = make_response({"status": 200, "remarks": "Success", "categories": categories})
         elif request.method == "PATCH":
-            request_data = request.get_json()
+            request_data = request.data
+            request_data = json.loads(request_data.decode('utf-8')) 
             id = request.args.get('id')
             if id is None:
                 resp = make_response({"status": 400, "remarks": "Missing id in the request body"})
