@@ -25,20 +25,15 @@ def unit():
             else:
                 resp = make_response({"status": 403, "remarks": "Access denied"})
         elif request.method == "GET":
-            id = request.args.get('id')
+            branch_id = request.args.get('branch_id')
             if id is None:
-                units = Unit.query.all()
-                response_body = [unit.to_map() for unit in units]
-                resp = make_response({"status": 200, "remarks": "Success", "units": response_body})
+                resp = make_response({"status": 400, "remarks": "Missing id in the request body"})
             else:
-                instance = Unit.query.filter(Unit.id == id).first()
-                if instance is None:
-                    resp = make_response({"status": 404, "remarks": "Unit does not exist."})
-                else:
-                    response_body = instance.to_map()
-                    response_body["status"] = 200
-                    response_body["remarks"] = "Success"
-                    resp = make_response(response_body)
+                instances = Unit.query.filter(Unit.branch_id == branch_id).all()
+                units = []
+                for instance in instances:
+                    units.append(instance.to_map())
+                resp = make_response({"status": 200, "remarks": "Success", "categories": units})
         elif request.method == "PATCH":
             request_data = request.get_json()
             id = request.args.get('id')

@@ -24,20 +24,15 @@ def category():
             else:
                 resp = make_response({"status": 403, "remarks": "Access denied"})
         elif request.method == "GET":
-            id = request.args.get('id')
+            branch_id = request.args.get('branch_id')
             if id is None:
-                categories = Category.query.all()
-                response_body = [category.to_map() for category in categories]
-                resp = make_response({"status": 200, "remarks": "Success", "categories": response_body})
+                resp = make_response({"status": 400, "remarks": "Missing id in the request body"})
             else:
-                instance = Category.query.filter(Category.id == id).first()
-                if instance is None:
-                    resp = make_response({"status": 404, "remarks": "Category does not exist."})
-                else:
-                    response_body = instance.to_map()
-                    response_body["status"] = 200
-                    response_body["remarks"] = "Success"
-                    resp = make_response(response_body)
+                instances = Category.query.filter(Category.branch_id == branch_id).all()
+                categories = []
+                for instance in instances:
+                    categories.append(instance.to_map())
+                resp = make_response({"status": 200, "remarks": "Success", "categories": categories})
         elif request.method == "PATCH":
             request_data = request.get_json()
             id = request.args.get('id')
