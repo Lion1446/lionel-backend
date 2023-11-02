@@ -33,7 +33,7 @@ def unit():
                 units = []
                 for instance in instances:
                     units.append(instance.to_map())
-                resp = make_response({"status": 200, "remarks": "Success", "categories": units})
+                resp = make_response({"status": 200, "remarks": "Success", "units": units})
         elif request.method == "PATCH":
             request_data = request.get_json()
             id = request.args.get('id')
