@@ -3,7 +3,6 @@ from constants import *
 from models import Unit, db
 
 unit_blueprint = Blueprint('unit_blueprint', __name__)
-category_blueprint = Blueprint('category_blueprint', __name__)
 
 @unit_blueprint.route('/unit', methods=["POST", "GET", "PATCH", "DELETE"])
 def unit():
@@ -26,7 +25,7 @@ def unit():
                 resp = make_response({"status": 403, "remarks": "Access denied"})
         elif request.method == "GET":
             branch_id = request.args.get('branch_id')
-            if id is None:
+            if branch_id is None:
                 resp = make_response({"status": 400, "remarks": "Missing id in the request body"})
             else:
                 instances = Unit.query.filter(Unit.branch_id == branch_id).all()

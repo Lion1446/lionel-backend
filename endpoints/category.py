@@ -25,7 +25,7 @@ def category():
                 resp = make_response({"status": 403, "remarks": "Access denied"})
         elif request.method == "GET":
             branch_id = request.args.get('branch_id')
-            if id is None:
+            if branch_id is None:
                 resp = make_response({"status": 400, "remarks": "Missing id in the request body"})
             else:
                 instances = Category.query.filter(Category.branch_id == branch_id).all()
