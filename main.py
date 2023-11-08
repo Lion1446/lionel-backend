@@ -16,9 +16,9 @@ from endpoints.category import category_blueprint
 ## ======================= STARTUPS =================================
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] =\
-        'sqlite:///' + os.path.join(basedir, 'database.db')
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://dbuser:Heleadsm3!2#@172.104.175.65:5231/lionel'
+# app.config['SQLALCHEMY_DATABASE_URI'] =\
+#         'sqlite:///' + os.path.join(basedir, 'database.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://dbuser:Heleadsm3!2#@172.105.118.194:3306/lionel'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
