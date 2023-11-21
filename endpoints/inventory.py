@@ -2,7 +2,7 @@ from sqlalchemy import func
 from flask import Blueprint
 from flask import make_response, request
 import json
-from models import Inventory, InventoryItem, Ingredients, InventoryTransaction, Category, Unit
+from models import Inventory, InventoryItem, Ingredients, InventoryTransaction, Unit, User
 from constants import *
 from models import db
 from datetime import datetime, timedelta
@@ -216,6 +216,8 @@ def inventory_transaction():
                     for transaction_query in transactions_query:
                         transaction = {}
                         transaction["details"] = transaction_query.to_map()
+                        user = User.query.get(transaction_query.user_id)
+                        transaction["details"]["done_by"] = user.fullname
                         ingredient = Ingredients.query.get(transaction_query.ingredient_id)
                         transaction["ingredient"] = ingredient.to_map()
                         
