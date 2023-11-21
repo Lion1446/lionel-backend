@@ -23,9 +23,9 @@ def ingredients():
                 response_body["ingredients"] = []
                 for instance in instances:
                     ingredient_body = instance.to_map()
-                    category = Category.query.get(instance.category_id)
+                    # category = Category.query.get(instance.category_id)
                     unit = Unit.query.get(instance.unit_id)
-                    ingredient_body["category"] = category.name
+                    # ingredient_body["category"] = category.name
                     ingredient_body["unit"] = unit.name
                     response_body["ingredients"].append(ingredient_body)
                 response_body["status"] = 200
@@ -51,7 +51,7 @@ def ingredient():
                     Ingredients.unit_id == request_data["unit_id"],
                     Ingredients.branch_id == request_data["branch_id"],
                     Ingredients.tolerance == request_data["tolerance"],
-                    Ingredients.category_id == request_data["category_id"],
+                    # Ingredients.category_id == request_data["category_id"],
                     ).all()
                 if query:
                     resp = make_response({"status": 400, "remarks": "Ingredient already exists."})
@@ -61,7 +61,7 @@ def ingredient():
                         unit_id = request_data["unit_id"],
                         branch_id = request_data["branch_id"],
                         tolerance = request_data["tolerance"],
-                        category_id = request_data["category_id"]
+                        # category_id = request_data["category_id"]
                     )
                     db.session.add(instance)
                     db.session.commit()
@@ -78,9 +78,9 @@ def ingredient():
                     resp = make_response({"status": 404, "remarks": "Ingredient does not exist."})
                 else:
                     response_body = instance.to_map()
-                    category = Category.query.get(instance.category_id)
+                    # category = Category.query.get(instance.category_id)
                     unit = Unit.query.get(instance.unit_id)
-                    response_body["category"] = category.name
+                    # response_body["category"] = category.name
                     response_body["unit"] = unit.name
                     response_body["status"] = 200
                     response_body["remarks"] = "Success"
@@ -100,7 +100,7 @@ def ingredient():
                         instance.name = request_data["name"]
                         instance.unit_id = request_data["unit_id"]
                         instance.tolerance = request_data["tolerance"]
-                        instance.category_id = request_data["category_id"]
+                        # instance.category_id = request_data["category_id"]
                         db.session.commit()
                         resp = make_response({"status": 200, "remarks": "Success"})
             else:

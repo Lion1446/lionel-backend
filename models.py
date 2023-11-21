@@ -73,7 +73,6 @@ class Ingredients(BaseModel):
     __tablename__ = "ingredients"
     name = db.Column(db.String(100), nullable=False)
     unit_id = db.Column(db.Integer, db.ForeignKey("unit.id"), nullable=False)
-    category_id = db.Column(db.Integer, db.ForeignKey("category.id"), nullable=False)
     branch_id = db.Column(db.Integer, db.ForeignKey("branch.id"), nullable=False)
     tolerance = db.Column(db.Float, nullable=False)
 
@@ -81,7 +80,6 @@ class Ingredients(BaseModel):
         ingredients_data = super().to_map()
         ingredients_data["name"] = self.name
         ingredients_data["unit_id"] = self.unit_id
-        ingredients_data["category_id"] = self.category_id
         ingredients_data["branch_id"] = self.branch_id
         ingredients_data["tolerance"] = self.tolerance
         return ingredients_data
@@ -89,12 +87,14 @@ class Ingredients(BaseModel):
 class Products(BaseModel):
     __tablename__ = "products"
     branch_id = db.Column(db.Integer, db.ForeignKey("branch.id"), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey("category.id"), nullable=False)
     name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
 
     def to_map(self):
         products_data = super().to_map()
         products_data["branch_id"] = self.branch_id
+        products_data["category_id"] = self.category_id
         products_data["name"] = self.name
         products_data["price"] = self.price
         return products_data

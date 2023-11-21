@@ -25,7 +25,8 @@ def products():
                     product = Products(
                         branch_id = request_data["branch_id"],
                         name = request_data["name"],
-                        price = request_data["price"]
+                        price = request_data["price"],
+                        category_id = request_data["category_id"]
                     )
                     db.session.add(product)
                     db.session.commit()
@@ -45,6 +46,8 @@ def products():
                     response_body["products"] = []
                     for product in products:
                         response_body["products"].append(product.to_map())
+                        category = Category.query.get(product.category_id)
+                        response_body["products"]["category"] = category.name
                     response_body["status"] = 200
                     response_body["remarks"] = "Success"
                     resp = make_response(response_body)
@@ -72,6 +75,7 @@ def products():
                 if request_data["auth_token"] in [AUTH_TOKEN, ADMIN_AUTH_TOKEN]:
                     product.name = request_data["name"]
                     product.price = request_data["price"]
+                    product.category_id = request_data["category_id"]
                     db.session.commit()
                     resp = make_response({"status": 200, "remarks": "Success"})
                 else:
@@ -116,12 +120,13 @@ def product_ingredients():
                     response_body["product_ingredients"] = []
                     for pi in product_ingredients:
                         ingredient = Ingredients.query.filter(Ingredients.id == pi.ingredient_id).first()
-                        category = Category.query.get(ingredient.category_id)
+                        product = Products.query.filter(Products.id == pi.product_id).first()
+                        category = Category.query.get(product.category_id)
                         unit = Unit.query.get(ingredient.unit_id)
                         product_ingredient_detail = pi.to_map()
+                        product_ingredient_detail["category"] = category.name
                         product_ingredient_detail["ingredient_details"] = ingredient.to_map()
                         product_ingredient_detail["ingredient_details"]["unit"] = unit.name
-                        product_ingredient_detail["ingredient_details"]["category"] = category.name
                         response_body["product_ingredients"].append(product_ingredient_detail)
                     response_body["status"] = 200
                     response_body["remarks"] = "Success"
