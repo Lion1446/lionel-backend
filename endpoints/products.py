@@ -45,9 +45,10 @@ def products():
                     response_body = {}
                     response_body["products"] = []
                     for product in products:
-                        response_body["products"].append(product.to_map())
                         category = Category.query.get(product.category_id)
-                        response_body["products"]["category"] = category.name
+                        product_map = product.to_map()
+                        product_map["category"] = category.name
+                        response_body["products"].append(product_map)
                     response_body["status"] = 200
                     response_body["remarks"] = "Success"
                     resp = make_response(response_body)
