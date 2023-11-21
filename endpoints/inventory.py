@@ -33,10 +33,10 @@ def inventory_starting():
                     for item in items:
                         item_body = item.to_map()
                         ingredient = Ingredients.query.filter(Ingredients.id == item.ingredient_id).first()
-                        category = Category.query.get(ingredient.category_id)
+                        # category = Category.query.get(ingredient.category_id)
                         unit = Unit.query.get(ingredient.unit_id)
                         ingredient_body = ingredient.to_map()
-                        ingredient_body["category"] = category.name
+                        # ingredient_body["category"] = category.name
                         ingredient_body["unit"] = unit.name
                         body = dict(item_body)
                         body.update((k, v) for k, v in ingredient_body.items() if k not in item_body)
@@ -124,10 +124,10 @@ def inventory_closing():
                     for item in items:
                         item_body = item.to_map()
                         ingredient = Ingredients.query.filter(Ingredients.id == item.ingredient_id).first()
-                        category = Category.query.get(ingredient.category_id)
+                        # category = Category.query.get(ingredient.category_id)
                         unit = Unit.query.get(ingredient.unit_id)
                         ingredient_body = ingredient.to_map()
-                        ingredient_body["category"] = category.name
+                        # ingredient_body["category"] = category.name
                         ingredient_body["unit"] = unit.name
                         body = dict(item_body)
                         body.update((k, v) for k, v in ingredient_body.items() if k not in item_body)
@@ -219,9 +219,9 @@ def inventory_transaction():
                         ingredient = Ingredients.query.get(transaction_query.ingredient_id)
                         transaction["ingredient"] = ingredient.to_map()
                         
-                        category = Category.query.get(ingredient.category_id)
+                        # category = Category.query.get(ingredient.category_id)
                         unit = Unit.query.get(ingredient.unit_id)
-                        transaction["ingredient"]["category"] = category.name
+                        # transaction["ingredient"]["category"] = category.name
                         transaction["ingredient"]["unit"] = unit.name
                         response_body["transactions"].append(transaction)
                 resp = make_response(response_body)
