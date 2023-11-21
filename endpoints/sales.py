@@ -56,7 +56,7 @@ def get_sales():
                             user_id = request_data["user_id"],
                             transaction_type = "sale",
                             quantity = product_ingredient.quantity * request_data["quantity"] * -1,
-                            remarks = product.name + f": {request_data['quantity']} orders",
+                            remarks =  f"{product.name}: {request_data['quantity']} orders",
                         )
                         db.session.add(sale_transaction)
                     ## make a transaction of these ingredients
